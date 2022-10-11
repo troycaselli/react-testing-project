@@ -37,12 +37,14 @@ test('increments count when increment button is clicked', async () => {
   // 1. grab elements from virtual DOM
   const count = screen.getByText(/0/);
   const incrementButton = screen.getByText(/increment/i);
+  const decrementButton = screen.queryByText(/decrement/i);
 
   // 2. simulate user click
-  await userEvent.click(incrementButton);
   // alternatively, once fireEvent is imported::: fireEvent.click(incrementButton);
+  await userEvent.click(incrementButton);
+  expect(count).toHaveTextContent('1'); // assert
 
-  // assert
-  expect(count).toHaveTextContent('1');
-  expect(count).not.toHaveTextContent('0');
+  await userEvent.click(decrementButton);
+  expect(count).toHaveTextContent('0'); // assert
+  expect(count).not.toHaveTextContent('1'); // assert
 });
